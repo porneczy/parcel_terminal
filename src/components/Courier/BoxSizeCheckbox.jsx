@@ -1,6 +1,10 @@
 import React from 'react'
 import { Box, FormLabel, Radio, RadioGroup, FormControlLabel } from '@mui/material'
-function BoxSizeCheckbox() {
+function BoxSizeCheckbox({ setBoxSize }) {
+    const handleChange = (event) => {
+        setBoxSize(event.target.value)
+    };
+
     return (
         <>
             <FormLabel id="demo-row-radio-buttons-group-label">Csomag mérete</FormLabel>
@@ -9,6 +13,7 @@ function BoxSizeCheckbox() {
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"
+                    onClick={handleChange}
                 >
                     <FormControlLabel value="a" control={<Radio />} label="A (kicsi)" />
                     <FormControlLabel value="b" control={<Radio />} label="B (közepes)" />
