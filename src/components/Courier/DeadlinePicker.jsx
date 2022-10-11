@@ -8,10 +8,11 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 function DeadlinePicker() {
     const [value, setValue] = React.useState(dayjs());
     /* const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54')); */
+    const old = value
 
     const handleChange = (newValue) => {
         setValue(newValue);
-        console.log(newValue.target.value)
+        console.log(newValue)
     };
 
     return (
@@ -20,6 +21,7 @@ function DeadlinePicker() {
             <Box display="flex" justifyContent="center" alignItems="center" sx={{ marginBottom: '60px' }}>
                 <Stack spacing={3} maxWidth={300}>
                     <MobileDatePicker
+                        disablePast={true}
                         label="Dátum"
                         inputFormat="YYYY/MM/DD"
                         value={value}
