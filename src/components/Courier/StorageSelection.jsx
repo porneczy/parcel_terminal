@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Box, Grid, FormLabel, FormControlLabel, Radio } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { Box, Grid, FormLabel, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 
 function StorageSelection({
     boxSize,
@@ -11,16 +11,30 @@ function StorageSelection({
     setBox_C_Disabled,
 }) {
 
+    const [userBox, setUserBox] = useState(); // ügyfél tárolója
+
+    const handleChange = (event) => {
+        setUserBox(event.target.value)
+        console.log(userBox)
+    };
+
     useEffect(() => {
         if (boxSize === "b") {
             setBox_A_Disabled(true)
+            setBox_B_Disabled(false)
+            setBox_C_Disabled(false)
         } else if (boxSize === "c") {
             setBox_A_Disabled(true)
             setBox_B_Disabled(true)
-        } else {
+            setBox_C_Disabled(false)
+        } else if (boxSize === "a") {
             setBox_A_Disabled(false)
             setBox_B_Disabled(false)
             setBox_C_Disabled(false)
+        } else {
+            setBox_A_Disabled(true)
+            setBox_B_Disabled(true)
+            setBox_C_Disabled(true)
         }
     }, [setBox_A_Disabled, setBox_B_Disabled, setBox_C_Disabled, boxSize]);
 
@@ -97,51 +111,60 @@ function StorageSelection({
         <Box sx={{ flexGrow: 1, marginBottom: '60px' }}>
             <FormLabel id="demo-row-radio-buttons-group-label">Szabad tároló kiválasztása</FormLabel>
             <Grid container spacing={1}>
-                <Grid container item spacing={3} justifyContent="center" alignItems="center">
-                    <React.Fragment>
-                        {box_A_radioInputs.map((radioInput) => {
-                            return (
-                                <Grid key={radioInput.label} item xs={2}>
-                                    <FormControlLabel
-                                        disabled={box_A_Disabled}
-                                        value={radioInput.value}
-                                        control={<Radio />}
-                                        label={radioInput.label} />
-                                </Grid>
-                            );
-                        })}
-                    </React.Fragment>
-                </Grid>
-                <Grid container item spacing={3} justifyContent="center" alignItems="center">
-                    <React.Fragment>
-                        {box_B_radioInputs.map((radioInput) => {
-                            return (
-                                <Grid key={radioInput.label} item xs={2}>
-                                    <FormControlLabel
-                                        disabled={box_B_Disabled}
-                                        value={radioInput.value}
-                                        control={<Radio />}
-                                        label={radioInput.label} />
-                                </Grid>
-                            );
-                        })}
-                    </React.Fragment>
-                </Grid>
-                <Grid container item spacing={3} justifyContent="center" alignItems="center">
-                    <React.Fragment>
-                        {box_C_radioInputs.map((radioInput) => {
-                            return (
-                                <Grid key={radioInput.label} item xs={2}>
-                                    <FormControlLabel
-                                        disabled={box_C_Disabled}
-                                        value={radioInput.value}
-                                        control={<Radio />}
-                                        label={radioInput.label} />
-                                </Grid>
-                            );
-                        })}
-                    </React.Fragment>
-                </Grid>
+                <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                >
+                    <Grid container item spacing={3} justifyContent="center" alignItems="center">
+                        <React.Fragment>
+                            {box_A_radioInputs.map((radioInput) => {
+                                return (
+                                    <Grid key={radioInput.label} item xs={2}>
+                                        <FormControlLabel
+                                            disabled={box_A_Disabled}
+                                            value={radioInput.value}
+                                            onChange={handleChange}
+                                            control={<Radio />}
+                                            label={radioInput.label} />
+                                    </Grid>
+                                );
+                            })}
+                        </React.Fragment>
+                    </Grid>
+                    <Grid container item spacing={3} justifyContent="center" alignItems="center">
+                        <React.Fragment>
+                            {box_B_radioInputs.map((radioInput) => {
+                                return (
+                                    <Grid key={radioInput.label} item xs={2}>
+                                        <FormControlLabel
+                                            disabled={box_B_Disabled}
+                                            value={radioInput.value}
+                                            onChange={handleChange}
+                                            control={<Radio />}
+                                            label={radioInput.label} />
+                                    </Grid>
+                                );
+                            })}
+                        </React.Fragment>
+                    </Grid>
+                    <Grid container item spacing={3} justifyContent="center" alignItems="center">
+                        <React.Fragment>
+                            {box_C_radioInputs.map((radioInput) => {
+                                return (
+                                    <Grid key={radioInput.label} item xs={2}>
+                                        <FormControlLabel
+                                            disabled={box_C_Disabled}
+                                            value={radioInput.value}
+                                            onChange={handleChange}
+                                            control={<Radio />}
+                                            label={radioInput.label} />
+                                    </Grid>
+                                );
+                            })}
+                        </React.Fragment>
+                    </Grid>
+                </RadioGroup>
             </Grid>
         </Box>
     )
