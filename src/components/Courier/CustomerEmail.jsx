@@ -3,7 +3,8 @@ import { Box, TextField, FormLabel, Typography } from '@mui/material'
 
 function CustomerEmail({
     setEmailError,
-    emailError
+    emailError,
+    setUserEmail
 }) {
 
     function isValidEmail(email) {
@@ -15,6 +16,7 @@ function CustomerEmail({
             setEmailError('nem megfelelő email');
         } else {
             setEmailError(null);
+            setUserEmail(event.target.value)
         }
     };
 

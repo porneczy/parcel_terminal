@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { FormLabel, Stack, TextField, Box, Typography } from '@mui/material'
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -7,21 +7,23 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 function DeadlinePicker({
     setDateError,
-    dateError
+    dateError,
+    setDateValue,
+    dateValue
 }) {
-    const [dateValue, setDateValue] = useState(dayjs());
+
 
     /* const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54')); */
 
     const handleChange = (newValue) => {
+        setDateValue(newValue);
 
-        if (dateValue.date() !== dayjs().date()) {
+        if (dateValue.date() !== dayjs().date() && dateValue.month() !== dayjs().month() && dateValue.year() !== dayjs().year()) {
             setDateError('válassz későbbi időpontot');
         } else {
             setDateError(null);
         }
 
-        setDateValue(newValue);
     };
 
     return (

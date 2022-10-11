@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Grid, FormControl } from '@mui/material'
+import dayjs from 'dayjs';
 import BoxSizeCheckbox from './BoxSizeCheckbox'
 import StorageSelection from './StorageSelection'
 import DeadlinePicker from './DeadlinePicker'
@@ -9,6 +10,8 @@ import CourierSendForm from './CourierSendForm'
 function Courier() {
     const [boxSize, setBoxSize] = useState();
     const [userBox, setUserBox] = useState(); // ügyfél tárolója
+    const [userEmail, setUserEmail] = useState(); // ügyfél email cime
+    const [dateValue, setDateValue] = useState(dayjs()); // határidő
     const [emailError, setEmailError] = useState('nem megfelelő email');
     const [dateError, setDateError] = useState('válassz későbbi időpontot');
     const [box_A_Disabled, setBox_A_Disabled] = useState(false);
@@ -34,14 +37,20 @@ function Courier() {
                             setUserBox={setUserBox} />
                         <DeadlinePicker
                             dateError={dateError}
-                            setDateError={setDateError} />
+                            setDateError={setDateError}
+                            dateValue={dateValue}
+                            setDateValue={setDateValue}
+                        />
                         <CustomerEmail
                             emailError={emailError}
-                            setEmailError={setEmailError} />
+                            setEmailError={setEmailError}
+                            setUserEmail={setUserEmail} />
                         <CourierSendForm
                             userBox={userBox}
                             dateError={dateError}
-                            emailError={emailError} />
+                            emailError={emailError}
+                            dateValue={dateValue}
+                            userEmail={userEmail} />
                     </FormControl>
                 </Grid>
             </Grid>
