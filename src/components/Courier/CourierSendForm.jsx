@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button } from '@mui/material'
-function CourierSendForm() {
+function CourierSendForm({
+    userBox,
+    dateError,
+    emailError
+}) {
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+    useEffect(() => {
+        if (userBox && dateError === null && emailError === null) {
+            setButtonDisabled(false)
+        }
+    }, [setButtonDisabled, userBox, dateError, emailError]);
+
+
     return (
         <Box display="flex" justifyContent="center" alignItems="center">
-            <Button variant="contained">Rögzités</Button>
+            <Button disabled={buttonDisabled} variant="contained">Rögzités</Button>
         </Box>
     )
 }

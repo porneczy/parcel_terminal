@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { styled } from '@mui/material/styles';
-import { Box, TextField, FormLabel } from '@mui/material'
+import React from 'react'
+import { Box, TextField, FormLabel, Typography } from '@mui/material'
 
-function CustomerEmail() {
-
-    const [error, setError] = useState(null);
+function CustomerEmail({
+    setEmailError,
+    emailError
+}) {
 
     function isValidEmail(email) {
         return /\S+@\S+\.\S+/.test(email);
@@ -12,21 +12,20 @@ function CustomerEmail() {
 
     const handleChange = event => {
         if (!isValidEmail(event.target.value)) {
-            setError('nem megfelelő email');
+            setEmailError('nem megfelelő email');
         } else {
-            setError(null);
+            setEmailError(null);
         }
-
     };
 
     return (
         <>
             <FormLabel id="demo-row-radio-buttons-group-label">Ügyféladatok</FormLabel>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             <Box display="flex" justifyContent="center" alignItems="center" sx={{ marginBottom: '60px', marginTop: '20px' }}>
                 <TextField
                     id="validation-outlined-input"
                     required
+                    helperText={emailError && <Typography component={'span'} style={{ color: 'red' }}>{emailError}</Typography>}
                     type='email'
                     label="Ügyfél e-mail cime"
                     variant="outlined"

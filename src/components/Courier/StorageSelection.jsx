@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Box, Grid, FormLabel, FormControlLabel, Radio, RadioGroup } from '@mui/material'
 
 function StorageSelection({
@@ -9,13 +9,12 @@ function StorageSelection({
     setBox_B_Disabled,
     box_C_Disabled,
     setBox_C_Disabled,
+    userBox,
+    setUserBox
 }) {
-
-    const [userBox, setUserBox] = useState(); // ügyfél tárolója
 
     const handleChange = (event) => {
         setUserBox(event.target.value)
-        console.log(userBox)
     };
 
     useEffect(() => {
