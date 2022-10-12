@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Grid, FormControl } from '@mui/material'
 import dayjs from 'dayjs';
 import BoxSizeCheckbox from './BoxSizeCheckbox'
@@ -17,6 +17,21 @@ function Courier() {
     const [box_A_Disabled, setBox_A_Disabled] = useState(false);
     const [box_B_Disabled, setBox_B_Disabled] = useState(false);
     const [box_C_Disabled, setBox_C_Disabled] = useState(false);
+    const [data, setData] = useState([]); // összes adatbázis adat
+    const axios = require('axios').default;
+
+    const getData = () => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:3000/api/parcels/',
+        })
+            .then(function (response) {
+                setData(response.data.data)
+            });
+    }
+    useEffect(() => {
+        getData()
+    }, [])
 
     return (
         <Box sx={{ flexGrow: 1, height: '100vh' }}>
@@ -34,7 +49,8 @@ function Courier() {
                             box_C_Disabled={box_C_Disabled}
                             setBox_C_Disabled={setBox_C_Disabled}
                             userBox={userBox}
-                            setUserBox={setUserBox} />
+                            setUserBox={setUserBox}
+                            data={data} />
                         <DeadlinePicker
                             dateError={dateError}
                             setDateError={setDateError}
