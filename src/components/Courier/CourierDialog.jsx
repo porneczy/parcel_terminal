@@ -5,7 +5,7 @@ function CourierDialog({ handleClose, open, userBox, dateValue, userEmail }) {
     const generatedPin = Math.floor(100000 + Math.random() * 900000);
 
     const copyClipboard = () => {
-        navigator.clipboard.writeText("Tároló: " + (userBox ? userBox.toUpperCase() : userBox) + "\nHatáridő: " + dateValue.year() + "." + dateValue.month() + 1 + "." + dateValue.date() + "\ne-mail: " + userEmail + "\njelszó: " + generatedPin)
+        navigator.clipboard.writeText("Tároló: " + (userBox ? userBox.toUpperCase() : userBox) + "\nHatáridő: " + dateValue.year() + "." + (dateValue.month() + 1) + "." + dateValue.date() + "\ne-mail: " + userEmail + "\njelszó: " + generatedPin)
     }
     return (
         <Dialog
