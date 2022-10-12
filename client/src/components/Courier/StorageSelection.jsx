@@ -39,10 +39,6 @@ function StorageSelection({
         }
     }, [setBox_A_Disabled, setBox_B_Disabled, setBox_C_Disabled, boxSize]);
 
-    const disableNotFreeBox = () => {
-
-    }
-    disableNotFreeBox()
     const box_A_radioInputs = [
         {
             value: "a1",
