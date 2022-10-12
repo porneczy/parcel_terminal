@@ -16,13 +16,16 @@ function DeadlinePicker({
     /* const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54')); */
 
     const handleChange = (newValue) => {
-        setDateValue(newValue);
+        const newDateSum = newValue.year() + newValue.month() + newValue.date()
+        const todaySum = dayjs().year() + dayjs().month() + dayjs().date()
 
-        if (dateValue.date() !== dayjs().date() && dateValue.month() !== dayjs().month() && dateValue.year() !== dayjs().year()) {
+        if (newDateSum <= todaySum) {
             setDateError('válassz későbbi időpontot');
         } else {
             setDateError(null);
+            setDateValue(newValue);
         }
+
 
     };
 
