@@ -5,6 +5,9 @@
   - [Függőségek](#függőségek)
   - [Telepítés](#telepítés)
   - [Program használata](#program-használata)
+	  - [Futár vagyok](#futár-vagyok)
+	  - [Ügyfél vagyok](#ügyfél-vagyok)
+  - [Frontend](#frontend)
 
 
 ## Függőségek
@@ -52,6 +55,7 @@ Ha minden rendben lezajlott, el is indult a program.
 )
 ## Program használata
   - Indítást követően 2 lehetőség van. "Futár vagyok" és "Ügyfél vagyok".
+  ### Futár vagyok
  - A "Futár vagyok" gomb megnyomása után a következő felület fogad.
  
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20153450.jpg)
@@ -69,7 +73,7 @@ Ha minden rendben lezajlott, el is indult a program.
  
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20160252.jpg)
 
- - Következő block az "Ügyféladatok". Itt egy ügyfélazonosítót adhatunk meg e-mail formában. e-mail validáció a következő regex segitségével történik:  (tartalmaznia kell egy "@" és egy "." karaktert, ezek előtt és után legalább 1db karaktert.)
+ - Következő block az "Ügyféladatok". Itt egy ügyfélazonosítót adhatunk meg e-mail formában. e-mail validáció a következő regex segítségével történik:  (tartalmaznia kell egy "@" és egy "." karaktert, ezek előtt és után legalább 1db karaktert.)
 ```jsx
 /\S+@\S+\.\S+/
 ```
@@ -81,7 +85,7 @@ Ha minden rendben lezajlott, el is indult a program.
  
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161444.jpg)
  - Bezárást követően az oldal ujratöltődik.
-
+### Ügyfél vagyok
  - Visszalépés után az "ügyfél vagyok" gombra kattintva  megjelenik a "csomag átvétele" felület.
  
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161609.jpg)
@@ -93,3 +97,40 @@ Ha minden rendben lezajlott, el is indult a program.
  
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161658.jpg)
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161549.jpg)
+## Frontend
+ - A program UI részéhez a Mui lett használva.
+	 - Az [Mui](https://mui.com/) egy open-source React libary, a projektben egy alap felhasználói élményért volt felelős.
+ - Dátumkezelés [Day.JS](https://day.js.org/)-el történik.
+	 - Kis helyet foglaló, gyors dátumkezelő
+	
+### könyvtárszerkezet
+
+ - A program frontend részén lévő konyvtárszerkezet:
+ 
+ ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20172253.jpg)
+
+ - 3 csoporta vannak felosztva a komponensek
+	 - Welcome
+	 - Courier
+	 - Customer
+ - A Welcome/Welcome.jsx komponensben található a 2 gomb, ami fogad a főoldalon.
+	 - itt a 2 oldalra történő navigálás "react-router" segitségével történt
+ - A Courier/Courier.jsx komponensbe van importálva a CourierDialog.jsx-en kívül mindegyik Courier mappában található komponens
+	 - itt történik a getData függvénnyel, axios-al egy GET kérés az adatbázis felé amivel a következő state-be ment minden adatot az adatbázisból.
+ ```js
+const [data, setData] =  useState([]);
+```
+ ```js
+const  getData  = () => {
+	axios({
+		method: 'get',
+		url: 'http://localhost:3000/api/parcels/',
+	})
+		.then(function (response) {
+		setData(response.data.data)
+		});
+}
+useEffect(() => {
+	getData()
+}, [])
+```
