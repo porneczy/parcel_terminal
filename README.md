@@ -51,37 +51,45 @@ Ha minden rendben lezajlott, el is indult a program.
 	MongoDB: mongodb://127.0.0.1:27017/parcelTerminal
 )
 ## Program használata
-Indítást követően 2 lehetőség van. "Futár vagyok" és "Ügyfél vagyok".
-A "Futár vagyok" gomb megnyomása után a következő felület fogad.
+  - Indítást követően 2 lehetőség van. "Futár vagyok" és "Ügyfél vagyok".
+ - A "Futár vagyok" gomb megnyomása után a következő felület fogad.
+ 
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20153450.jpg)
-A "Csomag mérete" block-ban kiválasztjuk, mekkora csomagot szeretnénk elhelyezni valamelyik fiókban, majd a "Szabad tároló kiválasztása" block-ban meghatározzuk a csomag pontos helyét.
-A fiókok mérete megegyezik a csomagok méretével, a program nem fogja engedni, hogy kicsi ("A" típusú) tárolóban nagy ("C" típusú) csomagot rakjunk, mert nem férne bele. (kisebb csomagot tudunk nagyobb tárolóba rakni) 
-Illetve a már foglalt fiókokba se enged 1-nél több csomagot belerakni.
-Példa:
+- A "Csomag mérete" block-ban kiválasztjuk, mekkora csomagot szeretnénk elhelyezni valamelyik fiókban, majd a "Szabad tároló kiválasztása" block-ban meghatározzuk a csomag pontos helyét.
+ - A fiókok mérete megegyezik a csomagok méretével, a program nem fogja engedni, hogy kicsi ("A" típusú) tárolóban nagy ("C" típusú) csomagot rakjunk, mert nem férne bele. (kisebb csomagot tudunk nagyobb tárolóba rakni) 
+ - Illetve a már foglalt fiókokba se enged 1-nél több csomagot belerakni.
+ - Példa:
+ 
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20154924.jpg)
 
-Következő block a "Határidő kiválasztása". Ezzel megadható a ügyfélnek egy határidő, amíg ki tudja venni a csomagot. A program nem engedi az aktuális mai napot és annál korábbi dátumot elfogadni, illetve nem fogad el olyan dátumot, ami nem valós. Csak és kizárolag számokat lehet a mezőbe beírni, a szükséges "/" jelet autómatikusan kiteszi. 
-Példa:
+ - Következő block a "Határidő kiválasztása". Ezzel megadható a ügyfélnek egy határidő, amíg ki tudja venni a csomagot.
+ -  A program nem engedi az aktuális mai napot és annál korábbi dátumot elfogadni, illetve nem fogad el olyan dátumot, ami nem valós. 
+ - Csak és kizárolag számokat lehet a mezőbe beírni, a szükséges "/" jelet autómatikusan kiteszi. 
+ - Példa:
+ 
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20160252.jpg)
 
-Következő block az "Ügyféladatok". Itt egy ügyfélazonosítót adhatunk meg e-mail formában. e-mail validáció a következő regex segitségével történik:  (tartalmaznia kell egy "@" és egy "." karaktert, ezek előtt és után legalább 1db karaktert.)
+ - Következő block az "Ügyféladatok". Itt egy ügyfélazonosítót adhatunk meg e-mail formában. e-mail validáció a következő regex segitségével történik:  (tartalmaznia kell egy "@" és egy "." karaktert, ezek előtt és után legalább 1db karaktert.)
 ```jsx
 /\S+@\S+\.\S+/
 ```
-Miután minden szükséges adatok helyesen kitöltöttünk, csakis kizárólag akkor enged a program a "rögzítés" gombra kattintani. 
-Ezzel bekerült az adatbázisba a csomag.
-A program generál egy 6 számból álló véletlenszerű jelszót is, aminek megléte feltétlen szükséges az ügyfél oldalon. 
-"vágolapra másol" gombbal lemásolhatjuk a szükséges adatokat, így nem szükséges az adatbáziba belépni.
-Példa:
+ - Miután minden szükséges adatok helyesen kitöltöttünk, csakis kizárólag akkor enged a program a "rögzítés" gombra kattintani. 
+ - Ezzel bekerült az adatbázisba a csomag.
+ - A program generál egy 6 számból álló véletlenszerű jelszót is, aminek megléte feltétlen szükséges az ügyfél oldalon. 
+ - "vágolapra másol" gombbal lemásolhatjuk a szükséges adatokat, így nem szükséges az adatbáziba belépni.
+ - Példa:
+ 
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161444.jpg)
-Bezárást követően az oldal ujratöltődik.
+ - Bezárást követően az oldal ujratöltődik.
 
-Visszalépés után az "ügyfél vagyok" gombra kattintva  megjelenik a "csomag átvétele" felület.
+ - Visszalépés után az "ügyfél vagyok" gombra kattintva  megjelenik a "csomag átvétele" felület.
+ 
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161609.jpg)
 
-Itt lehetősége van az ügyfélnek "átvenni" a csomagját, miután beírta a szükséges adatokat.
-Itt megjelenik egy "Teszt Dátum" dátumválasztó teszt jelleggel, arra az esetre, ha nem szeretnénk kivárni amíg lejár a határidő. :)
-Ha minden adatunk helyes (email, kód, határidő), abban az esetben "kinyílik a fiók" és az adatok törlődnek az adatbázisból.
-Bármi más esetben egy hiaüzenetet kapunk.
+ - Itt lehetősége van az ügyfélnek "átvenni" a csomagját, miután beírta a szükséges adatokat.
+ - Itt megjelenik egy "Teszt Dátum" dátumválasztó teszt jelleggel, arra az esetre, ha nem szeretnénk kivárni amíg lejár a határidő. :)
+ - Ha minden adatunk helyes (email, kód, határidő), abban az esetben "kinyílik a fiók" és az adatok törlődnek az adatbázisból.
+ - Bármi más esetben egy hiaüzenetet kapunk.
+ 
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161658.jpg)
 ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161549.jpg)
