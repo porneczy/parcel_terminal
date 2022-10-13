@@ -8,6 +8,9 @@
 	  - [Futár vagyok](#futár-vagyok)
 	  - [Ügyfél vagyok](#ügyfél-vagyok)
   - [Frontend](#frontend)
+	  - [Courier](#courier)
+		  - [BoxSizeCheckbox](#BoxSizeCheckbox)
+		  - [StorageSelection](#StorageSelection)
 
 
 ## Függőségek
@@ -114,9 +117,12 @@ Ha minden rendben lezajlott, el is indult a program.
 	 - Courier
 	 - Customer
  - A Welcome/Welcome.jsx komponensben található a 2 gomb, ami fogad a főoldalon.
-	 - itt a 2 oldalra történő navigálás "react-router" segitségével történt
+	 - itt a 2 oldalra történő navigálás `react-router` segítségével történt
+
+### Courier
+
  - A Courier/Courier.jsx komponensbe van importálva a CourierDialog.jsx-en kívül mindegyik Courier mappában található komponens
-	 - itt történik a getData függvénnyel, axios-al egy GET kérés az adatbázis felé amivel a következő state-be ment minden adatot az adatbázisból.
+	 - itt történik a `getData` függvénnyel, `axios`-al egy `GET` kérés az adatbázis felé amivel a következő `state`-be ment minden adatot az adatbázisból.
  ```js
 const [data, setData] =  useState([]);
 ```
@@ -134,3 +140,34 @@ useEffect(() => {
 	getData()
 }, [])
 ```
+
+
+#### BoxSizeCheckbox
+
+ - Ebben a komponensben a "csomag mérete" block található
+ - A `<RadioGroup />`-on el van helyezve egy `onClick` esemény ami meghívja a `handleChange()` függvényt ami egy `state`-be menti a felvett csomag méretét.
+ ```js
+ const  handleChange  = (event) => {
+	setBoxSize(event.target.value)
+}; 
+```
+
+#### StorageSelection
+
+ - Ebben a komponensben a "Szabad tároló kiválasztása" block található
+ - Létezik 3 tömb ( `box_A_radioInputs`, `box_B_radioInputs`, `box_C_radioInputs` ) amiben A, B és C sor cellák találhatók.
+ - Mindhárom tömbön végigiterál egy `.map()` metódus így jól és átláthatóan lehet a checkboxokat kezelni
+ - A checkboxoknak van 1-1 `disabled` `prop`-a ami `true` és `false` értéket vehet fel, `false` esetén lehet használni, `true` esetén pedig nem kattintható, nem vesz fel értéket.
+ - A sor cellákhoz is tartozik 1-1 state, ami `true` és `false` értéket tud felvenni, amire egy `if()` feltételt írva a lehet szabályozni, hogy nagyobb csomag esetén ne lehessen kisebb tárolóba berakni a csomagot.
+ ```js
+if (boxSize  ===  "b") {
+	setBox_A_Disabled(true)
+	setBox_B_Disabled(false)
+	setBox_C_Disabled(false)
+```
+ - A cellák `disabled` `prop`-a akkor vesz fel `true` értéket ha vagy a sor vagy a már foglalt box `true` értéket ad vissza
+  ```js
+disabled={box_A_Disabled  ||  reservedBoxes.includes(radioInput.value) ?  true  :  false}
+```
+ -  Az előző `handleChange()` függvény mintájára `userBox,setUserbox` `state`-be menti a kiválasztott tárolót.
+ 
