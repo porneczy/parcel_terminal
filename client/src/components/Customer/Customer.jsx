@@ -3,6 +3,8 @@ import { Box, Avatar, Typography, TextField, Button } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import CustomerDialogSuccess from './CustomerDialogSuccess';
 import CustomerDialogError from './CustomerDialogError';
+import DateChanger from './DateChanger';
+import dayjs from 'dayjs';
 
 function Customer() {
 
@@ -14,6 +16,8 @@ function Customer() {
     const axios = require('axios').default;
     const [userBoxName, setUserBoxName] = useState();
     const [userID, setUserID] = useState();
+    const [testDateValue, setTestDateValue] = useState(dayjs()); // teszthatáridő
+    const [testDateError, setTestDateError] = useState();
 
     const getData = () => {
         axios({
@@ -58,8 +62,12 @@ function Customer() {
 
     const checkEmailAndPin = () => {
         let validation = false
+
         data.map((parcel) => {
-            if (parcel.email === userEmail && parcel.pw === Number(userPin)) {
+            const actualParcelDeadLineSum = Number(parcel.deadLine.substring(0, 4)) + Number(parcel.deadLine.substring(5, 7)) + Number(parcel.deadLine.substring(8, 10))
+            const testDateValueSum = testDateValue.year() + testDateValue.month() + testDateValue.date()
+
+            if (parcel.email === userEmail && parcel.pw === Number(userPin) && actualParcelDeadLineSum >= testDateValueSum) {
                 handleClickOpenSuccessDialog()
                 validation = true
                 setUserBoxName(parcel.box)
@@ -121,6 +129,7 @@ function Customer() {
                     />
                     <Button
                         type="button"
+                        disabled={testDateError === "válassz valós dátumot" ? true : false}
                         onClick={checkEmailAndPin}
                         fullWidth
                         variant="contained"
@@ -128,6 +137,11 @@ function Customer() {
                     >
                         Küldés
                     </Button>
+                    <DateChanger
+                        testDateValue={testDateValue}
+                        setTestDateValue={setTestDateValue}
+                        setTestDateError={setTestDateError}
+                        testDateError={testDateError} />
                 </Box>
             </Box>
         </>
