@@ -1,7 +1,10 @@
 import React from 'react'
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button } from '@mui/material'
 
-function CustomerDialogSuccess({ handleCloseSuccessDialog, openSuccessDialog }) {
+function CustomerDialogSuccess({
+    handleCloseSuccessDialog,
+    openSuccessDialog,
+    userBoxName }) {
 
     return (
         <>
@@ -12,11 +15,11 @@ function CustomerDialogSuccess({ handleCloseSuccessDialog, openSuccessDialog }) 
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Sikeres rögzités!"}
+                    {"Box nyitva!"}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        na ez jó lesz
+                        {userBoxName ? userBoxName.toUpperCase() : userBoxName} box nyitva, a felugró ablakból kilépve törlődik a rekord az adatbázisból.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

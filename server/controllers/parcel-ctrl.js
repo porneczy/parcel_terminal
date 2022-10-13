@@ -48,7 +48,24 @@ const getParcels = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+deleteParcel = async (req, res) => {
+    await Parcel.findOneAndDelete({ _id: req.params.id }, (err, parcel) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+
+        if (!parcel) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Parcel not found` })
+        }
+
+        return res.status(200).json({ success: true, data: parcel })
+    }).catch(err => console.log(err))
+}
+
 module.exports = {
     createParcel,
-    getParcels
+    getParcels,
+    deleteParcel
 }

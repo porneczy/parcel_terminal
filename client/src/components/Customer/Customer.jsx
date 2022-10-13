@@ -12,6 +12,8 @@ function Customer() {
     const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
     const [openErrorDialog, setOpenErrorDialog] = useState(false);
     const axios = require('axios').default;
+    const [userBoxName, setUserBoxName] = useState();
+    const [userID, setUserID] = useState();
 
     const getData = () => {
         axios({
@@ -34,6 +36,10 @@ function Customer() {
     };
     const handleCloseSuccessDialog = () => {
         setOpenSuccessDialog(false);
+        axios
+            .delete(`http://localhost:3000/api/parcel/${userID}`)
+            .then(resp => resp.data)
+
         window.location.reload(false);
     };
     const handleCloseErrorDialog = () => {
@@ -56,6 +62,8 @@ function Customer() {
             if (parcel.email === userEmail && parcel.pw === Number(userPin)) {
                 handleClickOpenSuccessDialog()
                 validation = true
+                setUserBoxName(parcel.box)
+                setUserID(parcel._id)
             }
         })
         if (!validation) {
@@ -68,7 +76,8 @@ function Customer() {
         <>
             <CustomerDialogSuccess
                 openSuccessDialog={openSuccessDialog}
-                handleCloseSuccessDialog={handleCloseSuccessDialog} />
+                handleCloseSuccessDialog={handleCloseSuccessDialog}
+                userBoxName={userBoxName} />
             <CustomerDialogError
                 openErrorDialog={openErrorDialog}
                 handleCloseErrorDialog={handleCloseErrorDialog} />
