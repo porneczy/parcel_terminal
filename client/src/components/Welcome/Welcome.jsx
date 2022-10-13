@@ -3,6 +3,7 @@ import { Box, Grid, Button } from '@mui/material'
 import { Link } from 'react-router-dom';
 
 function Welcome() {
+
     return (
         <Box sx={{ flexGrow: 1, height: '100vh' }}>
             <Grid container spacing={2} alignItems="center" sx={{ height: '100vh' }}>

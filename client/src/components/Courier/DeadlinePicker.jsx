@@ -3,7 +3,7 @@ import { FormLabel, Stack, TextField, Box, Typography } from '@mui/material'
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 function DeadlinePicker({
     setDateError,
@@ -16,17 +16,22 @@ function DeadlinePicker({
     /* const [value, setValue] = React.useState(dayjs('2014-08-18T21:11:54')); */
 
     const handleChange = (newValue) => {
-        const newDateSum = newValue.year() + newValue.month() + newValue.date()
-        const todaySum = dayjs().year() + dayjs().month() + dayjs().date()
+        if (newValue) {
+            if (newValue.$d.toString() === "Invalid Date") {
+                setDateError('válassz valós dátumot');
+                return
+            }
 
-        if (newDateSum <= todaySum) {
-            setDateError('válassz későbbi időpontot');
-        } else {
-            setDateError(null);
-            setDateValue(newValue);
+            const newDateSum = newValue.year() + newValue.month() + newValue.date()
+            const todaySum = dayjs().year() + dayjs().month() + dayjs().date()
+
+            if (newDateSum <= todaySum) {
+                setDateError('válassz későbbi időpontot');
+            } else {
+                setDateError(null);
+                setDateValue(newValue);
+            }
         }
-
-
     };
 
     return (
@@ -35,7 +40,7 @@ function DeadlinePicker({
             {dateError && <Typography component={'span'} style={{ color: 'red' }}>{dateError}</Typography>}
             <Box display="flex" justifyContent="center" alignItems="center" sx={{ marginBottom: '60px', marginTop: '20px' }}>
                 <Stack spacing={3} maxWidth={300}>
-                    <MobileDatePicker
+                    <DesktopDatePicker
                         disablePast={true}
                         label="Dátum"
                         inputFormat="YYYY/MM/DD"

@@ -10,8 +10,10 @@ function StorageSelection({
     box_C_Disabled,
     setBox_C_Disabled,
     userBox,
-    setUserBox
+    setUserBox,
+    data
 }) {
+    const reservedBoxes = data.map((record) => record.box)
 
     const handleChange = (event) => {
         setUserBox(event.target.value)
@@ -36,8 +38,6 @@ function StorageSelection({
             setBox_C_Disabled(true)
         }
     }, [setBox_A_Disabled, setBox_B_Disabled, setBox_C_Disabled, boxSize]);
-
-
 
     const box_A_radioInputs = [
         {
@@ -121,7 +121,7 @@ function StorageSelection({
                                 return (
                                     <Grid key={radioInput.label} item xs={2}>
                                         <FormControlLabel
-                                            disabled={box_A_Disabled}
+                                            disabled={box_A_Disabled || reservedBoxes.includes(radioInput.value) ? true : false}
                                             value={radioInput.value}
                                             onChange={handleChange}
                                             control={<Radio />}
@@ -137,7 +137,7 @@ function StorageSelection({
                                 return (
                                     <Grid key={radioInput.label} item xs={2}>
                                         <FormControlLabel
-                                            disabled={box_B_Disabled}
+                                            disabled={box_B_Disabled || reservedBoxes.includes(radioInput.value) ? true : false}
                                             value={radioInput.value}
                                             onChange={handleChange}
                                             control={<Radio />}
@@ -153,7 +153,7 @@ function StorageSelection({
                                 return (
                                     <Grid key={radioInput.label} item xs={2}>
                                         <FormControlLabel
-                                            disabled={box_C_Disabled}
+                                            disabled={box_C_Disabled || reservedBoxes.includes(radioInput.value) ? true : false}
                                             value={radioInput.value}
                                             onChange={handleChange}
                                             control={<Radio />}
