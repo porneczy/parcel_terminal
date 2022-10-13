@@ -10,7 +10,7 @@ function CourierSendForm({
     userEmail
 }) {
     const [buttonDisabled, setButtonDisabled] = useState(true);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const [pin, setPin] = useState(Math.floor(100000 + Math.random() * 900000))
     const axios = require('axios').default;
 
