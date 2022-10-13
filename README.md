@@ -1,70 +1,87 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  
+## Tartalom
 
-## Available Scripts
+  - [Függőségek](#függőségek)
+  - [Telepítés](#telepítés)
+  - [Program használata](#program-használata)
 
-In the project directory, you can run:
 
-### `npm start`
+## Függőségek
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- A program egy MERN Stack alkalmazás, ezáltal az indításhoz szükséges az alábbi technológiák megléte
+	- MERN ([Mongo DB (5.0.13)](https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-5.0.13-signed.msi), Express JS, React JS, Node JS)
+![enter image description here](https://webimages.mongodb.com/_com_assets/cms/mern-stack-b9q1kbudz0.png?auto=format,compress)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Telepítés
 
-### `npm test`
+- [Segítség a MongoDB telepítéséhez](https://www.mongodb.com/docs/manual/administration/install-community/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+(Fejlesztői környezetben MongoDB 5.0.13-as verziója futott)
+A MongoDB telepítése után létre kell hozni azt a könyvtárat, ahol az adatokat tárolni fogja.
+Fejlszetői környezetben használt mappa:
+```bash
+ C:\data\db
+```
+Ezután egy terminálban elindítjuk a MongoDB Service-t
+```bash
+ C:\mongodb\bin> mongod
+```
+Majd egy másik terminálban létrehozzuk az adatbázist
+```bash
+ C:\mongodb\bin> mongo
+ > use parcelTerminal
+```
+A repó klónozását követően VSCode-ban a "client" és "server" mappában egyaránt futtassuk az "npm intall"-t.
+```bash
+$ npm install
+```
+Hozzunk létre 2 párhuzamosan futó terminált a VSCode-ban, a "server" mappában futtasuk le a következő parancsot az indításhoz
+```bash
+$ nodemon index.js
+```
+A másik terminálban pedig a "client" mappában futtasuk le a következő parancsot az indításhoz
+```bash
+$ npm start
+```
+Ha minden rendben lezajlott, el is indult a program.
+(
+	server: http://localhost:3000/
+	client: http://localhost:8000/
+	MongoDB: mongodb://127.0.0.1:27017/parcelTerminal
+)
+## Program használata
+Indítást követően 2 lehetőség van. "Futár vagyok" és "Ügyfél vagyok".
+A "Futár vagyok" gomb megnyomása után a következő felület fogad.
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20153450.jpg)
+A "Csomag mérete" block-ban kiválasztjuk, mekkora csomagot szeretnénk elhelyezni valamelyik fiókban, majd a "Szabad tároló kiválasztása" block-ban meghatározzuk a csomag pontos helyét.
+A fiókok mérete megegyezik a csomagok méretével, a program nem fogja engedni, hogy kicsi ("A" típusú) tárolóban nagy ("C" típusú) csomagot rakjunk, mert nem férne bele. (kisebb csomagot tudunk nagyobb tárolóba rakni) 
+Illetve a már foglalt fiókokba se enged 1-nél több csomagot belerakni.
+Példa:
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20154924.jpg)
 
-### `npm run build`
+Következő block a "Határidő kiválasztása". Ezzel megadható a ügyfélnek egy határidő, amíg ki tudja venni a csomagot. A program nem engedi az aktuális mai napot és annál korábbi dátumot elfogadni, illetve nem fogad el olyan dátumot, ami nem valós. Csak és kizárolag számokat lehet a mezőbe beírni, a szükséges "/" jelet autómatikusan kiteszi. 
+Példa:
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20160252.jpg)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Következő block az "Ügyféladatok". Itt egy ügyfélazonosítót adhatunk meg e-mail formában. e-mail validáció a következő regex segitségével történik:  (tartalmaznia kell egy "@" és egy "." karaktert, ezek előtt és után legalább 1db karaktert.)
+```jsx
+/\S+@\S+\.\S+/
+```
+Miután minden szükséges adatok helyesen kitöltöttünk, csakis kizárólag akkor enged a program a "rögzítés" gombra kattintani. 
+Ezzel bekerült az adatbázisba a csomag.
+A program generál egy 6 számból álló véletlenszerű jelszót is, aminek megléte feltétlen szükséges az ügyfél oldalon. 
+"vágolapra másol" gombbal lemásolhatjuk a szükséges adatokat, így nem szükséges az adatbáziba belépni.
+Példa:
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161444.jpg)
+Bezárást követően az oldal ujratöltődik.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Visszalépés után az "ügyfél vagyok" gombra kattintva  megjelenik a "csomag átvétele" felület.
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161609.jpg)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Itt lehetősége van az ügyfélnek "átvenni" a csomagját, miután beírta a szükséges adatokat.
+Itt megjelenik egy "Teszt Dátum" dátumválasztó teszt jelleggel, arra az esetre, ha nem szeretnénk kivárni amíg lejár a határidő. :)
+Ha minden adatunk helyes (email, kód, határidő), abban az esetben "kinyílik a fiók" és az adatok törlődnek az adatbázisból.
+Bármi más esetben egy hiaüzenetet kapunk.
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161658.jpg)
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-13%20161549.jpg)
