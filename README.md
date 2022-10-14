@@ -11,7 +11,7 @@
 	  - [Ügyfél vagyok](#ügyfél-vagyok)
   - [Program Frontend oldali felépítése](#a-program-frontend-oldali-felépítése)
 	  - [Courier](#courier)
-		  - [BoxSizeCheckbox](#boxsizcheckbox)
+		  - [BoxSizeCheckbox](#boxsizecheckbox)
 		  - [StorageSelection](#storageselection)
 		  - [DeadLinePicker](#deadlinepicker)
 		  - [CustomerEmail](#customeremail)
@@ -19,11 +19,13 @@
 		  - [CourierDialog](#courierdialog)
 	  - [Customer](#customer)
  - [Program Backend oldali felépítése](#a-program-backend-oldali-felépítése)
-	 - [Könyvtárszerkezet](#könytárszerkezet)
+	 - [Könyvtárszerkezet](#könyvtárszerkezet)
 	 - [db\index](#dbindex)
 	 - [models\parcel-model](#modelsparcel-model)
 	 - [controllers\parcel-ctrl](#controllersparcel-ctrl)
 	 - [routes\parcel-router](#routesparcel-router)
+	 - [index.js](#index.js)
+ - [Tesztelés](#tesztelés)
 
 ## Feladat leírása
  - A, B és C méretű boxok léteznek, a futár tudjon megadni egy határidőt, amíg kivehető a csomag, kérlek, vedd figyelembe, hogy érintő képernyőn könnyebb lehet pár karaktert beírni, mint naptárból dátumot választania.
@@ -400,3 +402,13 @@ router.delete('/parcel/:id', ParcelCtrl.deleteParcel)
 app.use('/api', parcelRouter)
 ```
  - A fenti kódban az app.use() csatolja az parcel-router.js fájl „/api” elérési útját.
+## Tesztelés
+ - A projekt manuális teszteléséhez `Postman` volt használva
+ - `GET`
+ ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-14%20112201.jpg)
+
+ - `POST`
+ ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-14%20113111.jpg)
+
+ - `DEL`
+ ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-14%20112243.jpg)
