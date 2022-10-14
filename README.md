@@ -18,6 +18,12 @@
 		  - [CourierSendForm](#couriersendform)
 		  - [CourierDialog](#courierdialog)
 	  - [Customer](#customer)
+ - [Program Backend oldali felépítése](#a-program-backend-oldali-felépítése)
+	 - [Könyvtárszerkezet](#könytárszerkezet)
+	 - [db\index](#dbindex)
+	 - [models\parcel-model](#modelsparcel-model)
+	 - [controllers\parcel-ctrl](#controllersparcel-ctrl)
+	 - [routes\parcel-router](#routesparcel-router)
 
 ## Feladat leírása
  - A, B és C méretű boxok léteznek, a futár tudjon megadni egy határidőt, amíg kivehető a csomag, kérlek, vedd figyelembe, hogy érintő képernyőn könnyebb lehet pár karaktert beírni, mint naptárból dátumot választania.
@@ -330,4 +336,67 @@ const  checkEmailAndPin  = () => {
 	.then(resp  =>  resp.data)
  ```
   - ezután az oldal újratöltődik. 
+ 
+## Program Backend oldali felépítése
   
+### könyvtárszerkezet
+
+ - A program backend részén lévő konyvtárszerkezet:
+
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-14%20100415.jpg)
+ 
+ 
+ -  A MongoDB egy séma nélküli NoSQL-dokumentum-adatbázis. Ez azt jelenti, hogy JSON-dokumentumokat tárolhat benne, és ezeknek a dokumentumoknak a szerkezete változhat, mivel nem kényszerítik ki, mint az SQL-adatbázisok. Ez a NoSQL használatának egyik előnye, mivel felgyorsítja az alkalmazásfejlesztést és csökkenti a telepítések bonyolultságát.
+
+### db\index
+
+ - A Mongoose egy Object Data Modeling (ODM) könyvtár a MongoDB és a Node.js számára. Kezeli az adatok közötti kapcsolatokat, biztosítja a séma érvényesítését, valamint a kódban lévő objektumok és az objektumok MongoDB-beli reprezentációi közötti fordítására szolgál.
+
+![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-14%20103206.jpg)
+ 
+ ``` js
+ mongoose
+	.connect('mongodb://127.0.0.1:27017/parcelTerminal', { useNewUrlParser: true })
+	.catch(e  => {
+	console.error('Connection error', e.message)
+	})
+ ```
+  - `127.0.0.1:27017` cím jelzi a `server`-t, `parcelTerminal` pedig az adatbázis neve
+
+### models\parcel-model
+ - A Mongoose séma határozza meg a dokumentum szerkezetét, alapértelmezett értékeket, érvényesítőket stb.
+  - A séma egy objektumon keresztül határozza meg a dokumentum tulajdonságait, ahol a kulcsnév megegyezik a gyűjteményben lévő tulajdonság nevével.
+  ``` js
+ const  Parcel  =  new  Schema(
+	{
+		box: { type: String, required: true },
+		deadLine: { type: String, required: true },
+		email: { type: String, required: true },
+		pw: { type: Number, required: true },
+	},
+	{ timestamps: true },
+) 
+  ```
+
+### controllers\parcel-ctrl
+ - Itt létrehozzuk az összes szükséges CRUD-műveletet
+ - `createParcel` szolgál az új rekordok létrehozására. (`POST`)
+ - `getParcels` a rekordok lekérdezésére. (`GET`)
+ - `deleteParcel` pedig a törlésre. (`DEL`) 
+
+### routes\parcel-router
+ - Itt hozzuk létre a `REST` végpontokat.
+ ``` js
+ router.post('/parcel', ParcelCtrl.createParcel)
+router.get('/parcels', ParcelCtrl.getParcels)
+router.delete('/parcel/:id', ParcelCtrl.deleteParcel)
+ ```
+
+### index.js
+ - [Express.js](https://expressjs.com/) egy JavaScript keretrendszer A Node.js környezetben tárolt egyoldalas és többoldalas alkalmazásokra.
+ - Jelen esetben a `server` a `3000`-es porton fut
+ - Az app.use() a köztesszoftver függvény csatlakoztatására vagy egy megadott elérési útra történő csatlakoztatására szolgál, a köztesszoftver-függvény akkor kerül végrehajtásra, ha az alap elérési útja megegyezik.
+``` js
+app.use('/api', parcelRouter)
+```
+ - A fenti kódban az app.use() csatolja az parcel-router.js fájl „/api” elérési útját.
