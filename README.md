@@ -16,6 +16,8 @@
 		  - [DeadLinePicker](#deadlinepicker)
 		  - [CustomerEmail](#customeremail)
 		  - [CourierSendForm](#couriersendform)
+		  - [CourierDialog](#courierdialog)
+	  - [Customer](#customer)
 
 ## Feladat leírása
  - A, B és C méretű boxok léteznek, a futár tudjon megadni egy határidőt, amíg kivehető a csomag, kérlek, vedd figyelembe, hogy érintő képernyőn könnyebb lehet pár karaktert beírni, mint naptárból dátumot választania.
@@ -134,6 +136,7 @@ Ha minden rendben lezajlott, el is indult a program.
  - A Welcome/Welcome.jsx komponensben található a 2 gomb, ami fogad a főoldalon.
 	 - itt a 2 oldalra történő navigálás `react-router` segítségével történt
 
+## Courier
 ### Courier
 
  - A Courier/Courier.jsx komponensbe van importálva a CourierDialog.jsx-en kívül mindegyik Courier mappában található komponens
@@ -262,3 +265,69 @@ axios({
 	}
 })
 ```
+ - ebbe a komponensbe van importálva a `CourierDialog.jsx`
+ 
+ ### CourierDialog
+  - Ebben a komponensben a beküldés utáni felugró ablak található
+  - Itt megjelennek csomag kivételéhez szükséges adatok, egyfajta összegzés
+  - A copyClipboard függvény pedig a vágólapra másolja ezeket az adatokat
+   ```js
+const  copyClipboard  = () => {
+navigator.clipboard.writeText("Tároló: "  + (userBox  ?  userBox.toUpperCase() :  userBox) +  "\nHatáridő: "  +  dateValue.year() +  "."  + (dateValue.month() +  1) +  "."  +  dateValue.date() +  "\ne-mail: "  +  userEmail  +  "\njelszó: "  +  pin)
+}
+```
+ - a bezárás gomb megnyomásával illetve a dialog-ból való kikattintásra a dialog eltűnik és az oldal újratöltődik
+## Customer
+### Customer
+ - Ebben a komponensben található az ügvfél oldali bejelentkezés, a tesztelésnek használt `DateChanger` és ide van importálva a sikeres és sikertelen elküldés `Dialog`.
+ - A 2 beviteli mező `onChange`-re van egy `handleChange` függvény, ami a bevitel tipusától függően tárolja egy `state`-ben az email-t és a jelszót.
+```js
+const  handleChange  =  event  => {
+	if (event.target.id  ===  "email") {
+		setUserEmail(event.target.value)
+	}
+	if (event.target.id  ===  "password") {
+		setUserPin(event.target.value)
+	}
+}
+```
+ - A lenti gomb-nak itt is van egy `disabled` `prop`-a ami a lent található `DateChanger`  validációja által visszaadott értéket vizsgája egy feltételben.
+``` js
+disabled={testDateError  ===  "válassz valós dátumot"  ?  true  :  false}
+```
+ - A gomb rendelkezik egy `onClick` eseménnyel is, `checkEmailAndPin()` ami ellenőrzi, hogy a beirt adatok mindegyike megegyezik-e valamelyik felvett csomag adataival.
+ ``` js
+const  checkEmailAndPin  = () => {
+	let  validation  =  false
+	  
+	data.map((parcel) => {
+		const  actualParcelDeadLineSum  =  Number(parcel.deadLine.substring(0, 4)) +  Number(parcel.deadLine.substring(5, 7)) +  Number(parcel.deadLine.substring(8, 10))
+		const  testDateValueSum  =  testDateValue.year() +  testDateValue.month() +  testDateValue.date()
+	  
+		if (parcel.email  ===  userEmail  &&  parcel.pw  ===  Number(userPin) &&  actualParcelDeadLineSum  >=  testDateValueSum) {
+			handleClickOpenSuccessDialog()
+			validation  =  true
+			setUserBoxName(parcel.box)
+			setUserID(parcel._id)
+		}
+	})
+	if (!validation) {
+		handleClickOpenErrorDialog()
+	}
+}
+ ```
+  - Itt létrehoz egy `validation` változót ami `false` vagy `true` éréket fehet fel. kezdeti értéke `false`. Ha az ellenőrzésre szolgáló feltétel nem teljesül, marad `false` értéken a `validation` és ilyenkor a hibaüzenet `Dialog` fog lefutni. 
+  - a függvény egy `.map()` `method`-al végigiterál a `data`-n (ebben van minden adatbázis adat amit `axios`-al az elején beleraktunk)
+  - itt létrehoz 2 `const`, `actualParcelDeadLineSum` és `testDateValueSum`. Az előbbi az éppen aktuális `data` adathoz tartózó határidőt "adja össze" a `DeadLinePicker`-nél is használt módszerrel, annyi különbséggel, hogy az adatbázisban szereplő határidő egy `string`, amit "szét szed" év/hó/nap részekre `.substing()` method-al, majd `Number` tipússá alakítja.
+  - ugyanezt átalakítás nélkül megcsinálja a `testDateValueSum` `const`-al is, ami a teszt dátumválasztó értéke.
+  - Majd egy feltételben ellenöris minden szükséges adatot a fiók kinyitásához.
+	  - HA az aktuális `data` adathoz tartozó email cim megegyezik az email mezőbe beírt email címmel ÉS ugyanez a `Pin`-el ÉS a határidő összeg nagyobb vagy egyenlő mint a tesztdátum (alapesetben itt is az aktuális mai dátum) AKKOR a sikeres `Dialog` fog lefutni, a `validation` változó `true` értéket vesz fel és state-be rakja a `box` nevét (pl: A4) és az aktuális `data` adathoz tartozó `ID`-t amire a törléskor lesz szükség.
+	  - Mivel ez csak abban az esetben teljesül, ha minden feltétel helyes, ellenkező esetben a `validation` értéke nem változik és az `error` `Dialog` fog lefutni ami egy egyszerű hiaüzenetet tartalmaz.
+ - Ha minden adatunk helyes, akkor a `CustomerDialogSuccess` fog lefutni, ami tartalmazza, hogy melyik fiókból tudjuk kivenni a csomagot. Ha ezt az Dialog-ot bezárjuk akkor egy `handleCloseSuccessDialog()` függvény fut le, ami magát a `DEL` kérést tartalmazza, és kitörli az adatbázisból a fenti feltételben látott `setUserID(parcel._id)` state-be rakott `ID`-ű höz tartozó rekordot.
+ ``` js
+ axios
+	.delete(`http://localhost:3000/api/parcel/${userID}`)
+	.then(resp  =>  resp.data)
+ ```
+  - ezután az oldal újratöltődik. 
+  
