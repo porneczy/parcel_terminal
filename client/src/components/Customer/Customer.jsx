@@ -64,10 +64,8 @@ function Customer() {
         let validation = false
 
         data.map((parcel) => {
-            const actualParcelDeadLineSum = Number(parcel.deadLine.substring(0, 4)) + Number(parcel.deadLine.substring(5, 7)) + Number(parcel.deadLine.substring(8, 10))
-            const testDateValueSum = testDateValue.year() + testDateValue.month() + testDateValue.date()
 
-            if (parcel.email === userEmail && parcel.pw === Number(userPin) && actualParcelDeadLineSum >= testDateValueSum) {
+            if ((parcel.email === userEmail) && (parcel.pw === Number(userPin)) && (parcel.deadLine >= testDateValue.toISOString().slice(0, 10))) {
                 handleClickOpenSuccessDialog()
                 validation = true
                 setUserBoxName(parcel.box)

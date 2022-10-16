@@ -20,7 +20,7 @@ function CourierSendForm({
             url: 'http://localhost:3000/api/parcel/',
             data: {
                 box: userBox,
-                deadLine: dateValue.year() + "." + (dateValue.month() + 1) + "." + dateValue.date(),
+                deadLine: dateValue.toISOString().slice(0, 10),
                 email: userEmail,
                 pw: pin,
             }

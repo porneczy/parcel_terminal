@@ -21,11 +21,9 @@ function DeadlinePicker({
                 setDateError('válassz valós dátumot');
                 return
             }
-
-            const newDateSum = newValue.year() + newValue.month() + newValue.date()
-            const todaySum = dayjs().year() + dayjs().month() + dayjs().date()
-
-            if (newDateSum <= todaySum) {
+            const today = new Date().toISOString().slice(0, 10);
+            const newDate = newValue.toISOString().slice(0, 10);
+            if (newDate <= today) {
                 setDateError('válassz későbbi időpontot');
             } else {
                 setDateError(null);
