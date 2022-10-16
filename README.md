@@ -1,5 +1,4 @@
-
-  
+ 
 ## Tartalom
 
   - [Feladat leírása](#feladat-leírása) 
@@ -26,6 +25,7 @@
 	 - [routes\parcel-router](#routesparcel-router)
 	 - [index.js](#index.js)
  - [Tesztelés](#tesztelés)
+ - [Beadási határidő után észrevett hiba kijavíása](#beadasihataridoutaneszrevethibakijaviasa)
 
 ## Feladat leírása
  - A, B és C méretű boxok léteznek, a futár tudjon megadni egy határidőt, amíg kivehető a csomag, kérlek, vedd figyelembe, hogy érintő képernyőn könnyebb lehet pár karaktert beírni, mint naptárból dátumot választania.
@@ -412,3 +412,59 @@ app.use('/api', parcelRouter)
 
  - `DEL`
  ![enter image description here](https://raw.githubusercontent.com/porneczy/parcel_terminal/main/documentationImg/Screenshot%202022-10-14%20112243.jpg)
+
+
+## Beadási határidő után észrevett hiba kijavíása
+ - Beadási határidő után észrevetem egy hibát, nem mindíg működött megfelelően a dátummal való számolás ezért itt mellékelem a módosíásokat.
+ 
+ ### Customer.jsx
+ ``` js
+     const checkEmailAndPin = () => {
+        let validation = false
+        data.map((parcel) => {
+            if ((parcel.email === userEmail) && (parcel.pw === Number(userPin)) && (parcel.deadLine >= testDateValue.toISOString().slice(0, 10))) {
+                handleClickOpenSuccessDialog()
+                validation = true
+                setUserBoxName(parcel.box)
+                setUserID(parcel._id)
+            }
+        })
+        if (!validation) {
+            handleClickOpenErrorDialog()
+        }
+    }
+ ```
+ ###DeadLinePicker.jsx
+ ``` js
+ const handleChange = (newValue) => {
+        if (newValue) {
+            if (newValue.$d.toString() === "Invalid Date") {
+                setDateError('válassz valós dátumot');
+                return
+            }
+            const today = new Date().toISOString().slice(0, 10);
+            const newDate = newValue.toISOString().slice(0, 10);
+            if (newDate <= today) {
+                setDateError('válassz későbbi időpontot');
+            } else {
+                setDateError(null);
+                setDateValue(newValue);
+            }
+        }
+    };
+ ```
+ ### CourierSendForm.jsx
+ ``` js
+     const createParcel = () => {
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/parcel/',
+            data: {
+                box: userBox,
+                deadLine: dateValue.toISOString().slice(0, 10),
+                email: userEmail,
+                pw: pin,
+            }
+        })
+    }
+ ```
